@@ -41,11 +41,15 @@ class DbtCloudHook(BaseHook):
             dbt_cloud_account_id = conn.extra_dejson['dbt_cloud_account_id']
         else:
             raise AirflowException('No dbt Cloud Account ID was supplied in dbt Cloud connection.')
+
+        verify = True
+        if 'verify' in conn.extra_dejson:
+            verify = conn.extra_dejson['verify']
     
         if conn.host is not None and len(conn.host) > 0:
-            return DbtCloud(dbt_cloud_account_id, dbt_cloud_api_token, conn.host)
+            return DbtCloud(dbt_cloud_account_id, dbt_cloud_api_token, api_base=conn.host, verify=verify)
         else:
-            return DbtCloud(dbt_cloud_account_id, dbt_cloud_api_token)
+            return DbtCloud(dbt_cloud_account_id, dbt_cloud_api_token, verify=verify)
 
     def get_run_status(self, run_id):
         """
