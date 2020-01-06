@@ -13,10 +13,10 @@ class DbtCloud(object):
     * :py:meth: `run_job` - Triggers a run for a job using the job name
     """
 
-    def __init__(self, account_id, api_token):
+    def __init__(self, account_id, api_token, api_base='https://cloud.getdbt.com/api/v2'):
         self.account_id = account_id
         self.api_token = api_token
-        self.api_base = 'https://cloud.getdbt.com/api/v2'
+        self.api_base = api_base
 
     def _get(self, url_suffix):
         url = self.api_base + url_suffix
