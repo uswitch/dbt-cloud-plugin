@@ -13,15 +13,16 @@ class DbtCloud(object):
     * :py:meth: `run_job` - Triggers a run for a job using the job name
     """
 
-    def __init__(self, account_id, api_token):
+    def __init__(self, account_id, api_token, api_base='https://cloud.getdbt.com/api/v2', verify=True):
         self.account_id = account_id
         self.api_token = api_token
-        self.api_base = 'https://cloud.getdbt.com/api/v2'
+        self.api_base = api_base
+        self.verify = verify
 
     def _get(self, url_suffix):
         url = self.api_base + url_suffix
         headers = {'Authorization': 'Token %s' % self.api_token}
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, verify=self.verify)
         if response.status_code == 200:
             return json.loads(response.content)
         else:
@@ -30,7 +31,7 @@ class DbtCloud(object):
     def _post(self, url_suffix, data=None):
         url = self.api_base + url_suffix
         headers = {'Authorization': 'token %s' % self.api_token}
-        response = requests.post(url, headers=headers, data=data)
+        response = requests.post(url, headers=headers, data=data, verify=self.verify)
         if response.status_code == 200:
             return json.loads(response.content)
         else:
