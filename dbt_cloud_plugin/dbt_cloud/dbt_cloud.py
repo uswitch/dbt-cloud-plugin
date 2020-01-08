@@ -2,6 +2,7 @@
 import json
 import requests
 import time
+from airflow.exceptions import AirflowException
 
 class DbtCloud(object):
     """
